@@ -1,4 +1,4 @@
-import { Body, Controller, HttpStatus, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Param, Post } from '@nestjs/common';
 import { CreateUserRequestDTO } from './dto/create-user-request.dto';
 import { CreateUserResponseDTO } from './dto/create-user-response.dto';
 
@@ -18,11 +18,17 @@ export class UserController {
   public async createUser(
     @Body() createUserRequestDTO: CreateUserRequestDTO,
   ): Promise<CreateUserResponseDTO> {
-    const { id } = await this.userService.createUser({
+    const id = await this.userService.createUser({
       email: createUserRequestDTO.email,
       name: createUserRequestDTO.name,
       password: createUserRequestDTO.password,
     });
     return new CreateUserResponseDTO(id);
+  }
+
+  @Get(':userID')
+  async getUserByID(@Param('userID') userID: string): Promise<void> {
+    const userResult = await this.userService.getUserByID(userID);
+    console.log(userResult);
   }
 }
