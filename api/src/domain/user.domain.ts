@@ -14,6 +14,7 @@ export class User {
   email: string;
   password: string;
   createdAt: Date;
+  updatedAt: Date;
 
   constructor(props: UserUpdate) {
     Object.assign(

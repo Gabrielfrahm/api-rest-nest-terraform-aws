@@ -4,6 +4,7 @@ import { CreateUserResponseDTO } from './dto/create-user-response.dto';
 
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UserService } from '@root/service/user.service';
+import { GetUserByIDResponseDTO } from './dto/get-user-by-ID-response.dto';
 
 @ApiTags('users')
 @Controller('users')
@@ -27,8 +28,21 @@ export class UserController {
   }
 
   @Get(':userID')
-  async getUserByID(@Param('userID') userID: string): Promise<void> {
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'user found',
+    type: CreateUserResponseDTO,
+  })
+  async getUserByID(
+    @Param('userID') userID: string,
+  ): Promise<GetUserByIDResponseDTO> {
     const userResult = await this.userService.getUserByID(userID);
-    console.log(userResult);
+    return new GetUserByIDResponseDTO({
+      id: userResult.id,
+      name: userResult.name,
+      email: userResult.email,
+      createdAt: userResult.createdAt.toISOString(),
+      updatedAt: userResult.updatedAt.toISOString(),
+    });
   }
 }

@@ -32,7 +32,7 @@ export class UserService {
     return user.id;
   }
 
-  async getUserByID(userID: string): Promise<any> {
+  async getUserByID(userID: string): Promise<User> {
     const user = await this.userRepository.getUserByID(userID);
 
     if (!user) {
